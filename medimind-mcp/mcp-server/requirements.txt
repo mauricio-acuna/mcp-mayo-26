@@ -1,0 +1,61 @@
+# ==========================================
+# Web Framework
+# ==========================================
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# ==========================================
+# Healthcare Standards
+# ==========================================
+fhir.resources==7.1.0            # FHIR R4 models
+hl7apy==1.3.5                    # HL7 v2 parser
+pydicom==2.4.3                   # DICOM imaging
+
+# ==========================================
+# Database
+# ==========================================
+sqlalchemy==2.0.23
+alembic==1.12.1
+psycopg2-binary==2.9.9           # PostgreSQL
+motor==3.3.2                     # MongoDB async
+redis==5.0.1
+
+# ==========================================
+# Security & Encryption
+# ==========================================
+cryptography==41.0.7             # AES-256
+python-jose[cryptography]==3.3.0 # JWT
+passlib[bcrypt]==1.7.4
+presidio-analyzer==2.2.33        # PHI de-identification
+presidio-anonymizer==2.2.33
+
+# ==========================================
+# AI/ML
+# ==========================================
+transformers==4.35.0             # BioGPT
+spacy==3.7.2
+scispacy==0.5.3                  # Medical NER
+torch==2.1.0
+xgboost==2.0.2
+
+# ==========================================
+# HTTP Clients
+# ==========================================
+httpx==0.25.2                    # Async HTTP (for FHIR)
+aiohttp==3.9.1
+
+# ==========================================
+# Utilities
+# ==========================================
+python-dotenv==1.0.0
+
+# ==========================================
+# Development & Testing
+# ==========================================
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+bandit==1.7.5                    # Security scanner
+black==23.11.0                   # Code formatter

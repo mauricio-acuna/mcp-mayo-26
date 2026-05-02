@@ -1,0 +1,87 @@
+# ===========================================================
+# .gitignore — repo MCP en Producción
+# ===========================================================
+
+# --- Material privado / no apto para repo público ---
+# Carpeta para todo lo que NO se sube. Contenido histórico,
+# borradores comerciales, secretos locales, exploración descartada.
+_local/
+
+# --- Secretos ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+secrets/
+credentials/
+
+# --- Python (medimind-mcp) ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+ENV/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+
+# --- Node / web (futuro) ---
+node_modules/
+dist/
+build/
+.next/
+.astro/
+.cache/
+
+# --- IDE / SO ---
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Logs y bases de datos locales ---
+*.log
+logs/
+*.sqlite
+*.sqlite3
+*.db
+
+# --- Notas y borradores personales (que no quieras versionar) ---
+NOTAS_PERSONALES.md
+TODO_PERSONAL.md
+borradores/
+promptDeOtroProyecto.md
+
+# --- Output de herramientas / generados ---
+*.pdf
+!book-manuscript/**/*.pdf
+*.epub
+!book-manuscript/**/*.epub
+coverage.xml
+junit.xml
+
+# --- Memoria de agentes IA ---
+.copilot/
+.cursor/
+.aider*
+.specstory/
+
+# --- Docker ---
+docker-compose.override.yml
+
+# --- Terraform / IaC ---
+*.tfstate
+*.tfstate.*
+.terraform/

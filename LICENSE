@@ -1,0 +1,31 @@
+LICENCIA — PENDIENTE DE DEFINIR
+================================
+
+Este archivo es un placeholder. La licencia definitiva del repositorio
+debe decidirse antes de cualquier publicación externa.
+
+Recomendaciones por componente (ver HANDOFF.md §5):
+
+  - Código MediMind MCP (mcp-server/):
+        Apache-2.0  (si se quiere uso comercial libre)
+        BSL-1.1     (si se planea ofrecer versión hosted comercial)
+
+  - Manuscrito del libro (book-manuscript/):
+        All rights reserved              (default mientras esté en redacción)
+        CC-BY-NC-ND-4.0                  (para capítulos publicados sueltos)
+
+  - Spec OWASP MCP Top 10 (mayo2026/ejecucion/04-toolkit-oss/):
+        CC-BY-4.0   (alineado con OWASP)
+
+  - Documentos estratégicos (mayo2026/, PIVOTE_2026.md, HANDOFF.md):
+        Propietario / All rights reserved
+        (no destinados a publicación externa)
+
+Hasta que se sustituya este archivo por una licencia formal, todo el
+contenido de este repositorio es:
+
+    Copyright (c) 2025-2026 [NOMBRE DEL TITULAR PENDIENTE]
+    All rights reserved.
+
+    No se concede ningún derecho de uso, copia, modificación o
+    distribución salvo autorización escrita expresa del titular.
