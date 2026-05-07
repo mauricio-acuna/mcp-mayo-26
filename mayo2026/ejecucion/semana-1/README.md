@@ -13,7 +13,8 @@ semana-1/
 ├── 01-tracker-contactos.md            ← tabla para rellenar (30 contactos)
 ├── 02-mensajes-personalizables.md     ← plantillas con huecos
 ├── 03-notas-entrevista-template.md    ← una copia por entrevistado
-└── 04-sintesis-dia-7.md               ← plantilla para escribir la decisión
+├── 04-sintesis-dia-7.md               ← plantilla para escribir la decisión
+└── 05-fuentes-busqueda-contactos.md   ← fuentes y queries para construir la lista
 ```
 
 ## Time-box estricto
