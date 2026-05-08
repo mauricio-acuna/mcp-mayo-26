@@ -57,6 +57,53 @@ function Get-TrackerRows {
     return $rows
 }
 
+function Get-FirstName {
+    param([string]$FullName)
+
+    if (-not $FullName) {
+        return ""
+    }
+
+    return ($FullName.Trim() -split "\s+")[0]
+}
+
+function Format-Sentence {
+    param([string]$Text)
+
+    if (-not $Text) {
+        return ""
+    }
+
+    return $Text.Trim().TrimEnd(".", " ", "`t")
+}
+
+function Get-OrPlaceholder {
+    param(
+        [string]$Value,
+        [string]$Label
+    )
+
+    if ($Value) {
+        return $Value
+    }
+
+    return "[PENDIENTE: $Label]"
+}
+
+function Get-SectorText {
+    param([string]$Profile)
+
+    switch -Regex ($Profile) {
+        "healthtech|FHIR|clinica|salud" { return "healthtech y datos clinicos" }
+        "fintech|CISO" { return "fintech e insurtech regulada" }
+        "SRE|DevRel|MCP|OSS|GitHub" { return "developer tooling e infraestructura" }
+        "auditor|SOC|ENS|GRC|seguridad" { return "seguridad, GRC y compliance" }
+        "consultora|IA" { return "gobierno de IA y plataforma" }
+        "SaaS" { return "SaaS B2B" }
+        default { return "equipos tecnicos regulados" }
+    }
+}
+
 if (-not (Test-Path $TrackerPath)) {
     throw "No existe el tracker: $TrackerPath"
 }
@@ -64,13 +111,13 @@ if (-not (Test-Path $TrackerPath)) {
 $tracker = Get-Content $TrackerPath
 $config = if (Test-Path $ConfigPath) { Get-Content $ConfigPath } else { @() }
 
-$calendly = Get-TableValue $config "Calendly / Cal.com URL"
-$franja1 = Get-TableValue $config "Franja 1 ofrecida"
-$franja2 = Get-TableValue $config "Franja 2 ofrecida"
-$linkCapitulo = Get-TableValue $config "Link capitulo / borrador PDF"
-$linkSpec = Get-TableValue $config "Link OWASP MCP Top 10"
-$firma = Get-TableValue $config "Nombre firma"
-$linkedin = Get-TableValue $config "LinkedIn URL"
+$calendly = Get-OrPlaceholder (Get-TableValue $config "Calendly / Cal.com URL") "calendario"
+$franja1 = Get-OrPlaceholder (Get-TableValue $config "Franja 1 ofrecida") "franja 1"
+$franja2 = Get-OrPlaceholder (Get-TableValue $config "Franja 2 ofrecida") "franja 2"
+$linkCapitulo = Get-OrPlaceholder (Get-TableValue $config "Link capitulo / borrador PDF") "link capitulo"
+$linkSpec = Get-OrPlaceholder (Get-TableValue $config "Link OWASP MCP Top 10") "link spec"
+$firma = Get-OrPlaceholder (Get-TableValue $config "Nombre firma") "firma"
+$linkedin = Get-OrPlaceholder (Get-TableValue $config "LinkedIn URL") "linkedin"
 
 $rows = Get-TrackerRows $tracker
 $ready = $rows | Where-Object {
@@ -87,18 +134,20 @@ $lines += ("Contactos listos: {0}" -f (($ready | Measure-Object).Count))
 $lines += ""
 
 foreach ($row in $ready) {
-    $sector = if ($row.Perfil) { $row.Perfil } else { "tu sector" }
+    $firstName = Get-FirstName $row.Nombre
+    $sector = Get-SectorText $row.Perfil
+    $signal = Format-Sentence $row.Hueco
     $isOss = $row.Perfil -match "DevRel|SRE|MCP|OSS|GitHub|observabilidad|developer"
 
     if ($isOss) {
-        $connection = "Hola $($row.Nombre), vi tu trabajo/contexto en $($row.Empresa) y me llamó la atención $($row.Hueco). Estoy escribiendo material en español sobre seguridad de MCP en producción y quería conectar para intercambiar perspectivas. Sin agenda comercial."
+        $connection = "Hola $firstName, vi tu trabajo/contexto en $($row.Empresa) y me llamo la atencion que $signal. Estoy escribiendo material en espanol sobre seguridad de MCP en produccion y queria conectar para intercambiar perspectivas. Sin agenda comercial."
     } else {
-        $connection = "Hola $($row.Nombre), vi que lideras $($row.Rol) en $($row.Empresa) y me llamó la atención $($row.Hueco). Estoy investigando cómo equipos en $sector están abordando la seguridad de servidores MCP en producción. ¿Conectamos? No vendo nada, solo me interesa el panorama."
+        $connection = "Hola $firstName, vi tu rol en $($row.Empresa) y me llamo la atencion que $signal. Estoy investigando como equipos de $sector estan abordando la seguridad de servidores MCP en produccion. Conectamos? No vendo nada, solo me interesa el panorama."
     }
 
-    $followUp = "Gracias por aceptar, $($row.Nombre).`n`nTe dejo dos cosas, sin coste y sin pedir nada a cambio:`n`n1. Borrador del capítulo `"Modelo de amenazas de un MCP server`" — $linkCapitulo`n2. Spec abierto OWASP MCP Top 10 — $linkSpec`n`nSi en $($row.Empresa) ya tenéis algún MCP server en producción, piloto o evaluación, me encantaría hacerte 5 preguntas, 25 min, para entender cómo lo enfocáis. A cambio comparto contigo el agregado de entrevistas al final.`n`n¿Te encaja $franja1 o $franja2? También dejo calendario por si te resulta más cómodo: $calendly"
+    $followUp = "Gracias por aceptar, $firstName.`n`nTe dejo dos cosas, sin coste y sin pedir nada a cambio:`n`n1. Borrador del capitulo `"Modelo de amenazas de un MCP server`" - $linkCapitulo`n2. Spec abierto OWASP MCP Top 10 - $linkSpec`n`nSi en $($row.Empresa) ya teneis algun MCP server en produccion, piloto o evaluacion, me encantaria hacerte 5 preguntas, 25 min, para entender como lo enfocais. A cambio comparto contigo el agregado de entrevistas al final.`n`nTe encaja $($franja1) o $($franja2)? Tambien dejo calendario por si te resulta mas comodo: $calendly"
 
-    $email = "Asunto: seguridad MCP en $($row.Empresa)`n`nHola $($row.Nombre),`n`nVi que en $($row.Empresa) estáis cerca de $($row.Hueco).`n`nEstoy escribiendo material técnico en español sobre cómo asegurar servidores Model Context Protocol antes y durante producción, y querría escuchar cómo lo estáis enfocando. 25 minutos por Zoom, sin pitch.`n`nA cambio te paso:`n- Borrador del capítulo `"Modelo de amenazas de un MCP server`".`n- Acceso early al spec OWASP MCP Top 10.`n`nSi te encaja: $calendly — o respóndeme con un hueco que te vaya.`n`nGracias,`n$firma`n$linkedin"
+    $email = "Asunto: seguridad MCP en $($row.Empresa)`n`nHola $firstName,`n`nVi que en $($row.Empresa) estais trabajando cerca de esto: $signal.`n`nEstoy escribiendo material tecnico en espanol sobre como asegurar servidores Model Context Protocol antes y durante produccion, y querria escuchar como lo estais enfocando. 25 minutos por Zoom, sin pitch.`n`nA cambio te paso:`n- Borrador del capitulo `"Modelo de amenazas de un MCP server`".`n- Acceso early al spec OWASP MCP Top 10.`n`nSi te encaja: $calendly - o respondeme con un hueco que te vaya.`n`nGracias,`n$firma`n$linkedin"
 
     $lines += "## $($row.Numero). $($row.Nombre) - $($row.Empresa)"
     $lines += ""

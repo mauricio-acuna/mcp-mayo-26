@@ -15,7 +15,8 @@ semana-1/
 ├── 03-notas-entrevista-template.md    ← una copia por entrevistado
 ├── 04-sintesis-dia-7.md               ← plantilla para escribir la decisión
 ├── 05-fuentes-busqueda-contactos.md   ← fuentes y queries para construir la lista
-└── 06-organizaciones-objetivo.md      ← organizaciones semilla por segmento
+├── 06-organizaciones-objetivo.md      ← organizaciones semilla por segmento
+└── 07-workflow-investigacion-personas.md ← pasos para validar personas concretas
 ```
 
 ## Time-box estricto
