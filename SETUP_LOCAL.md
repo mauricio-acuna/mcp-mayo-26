@@ -47,6 +47,12 @@ powershell -ExecutionPolicy Bypass -File .\tools\generate-mensajes-validacion.ps
 
 La salida queda en `_local/validacion/semana-1/mensajes-generados.local.md`.
 
+Revisar calidad de mensajes antes de enviar:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\tools\check-mensajes-validacion.ps1
+```
+
 Generar plan local de envio por lotes:
 
 ```powershell
@@ -62,10 +68,12 @@ powershell -ExecutionPolicy Bypass -File .\tools\update-tracker-status.ps1 -Ids 
 ## Flujo inmediato
 
 1. Rellenar `_local/validacion/semana-1/CONFIG.local.md`.
-2. Rellenar `_local/validacion/semana-1/01-tracker-contactos.local.md` con 30 contactos.
-3. Enviar mensajes usando `mayo2026/ejecucion/semana-1/02-mensajes-personalizables.md`.
-4. Guardar notas reales en `_local/validacion/semana-1/notas/`.
-5. Al cerrar entrevistas, copiar solo datos agregados y anonimizados a `mayo2026/ejecucion/semana-1/04-sintesis-dia-7.md`.
+2. Ejecutar `check-validacion.ps1`.
+3. Generar mensajes y revisar con `check-mensajes-validacion.ps1`.
+4. Generar plan de envio por lotes.
+5. Enviar mensajes y marcar estados con `update-tracker-status.ps1`.
+6. Guardar notas reales en `_local/validacion/semana-1/notas/`.
+7. Al cerrar entrevistas, copiar solo datos agregados y anonimizados a `mayo2026/ejecucion/semana-1/04-sintesis-dia-7.md`.
 
 ## Reglas de seguridad
 

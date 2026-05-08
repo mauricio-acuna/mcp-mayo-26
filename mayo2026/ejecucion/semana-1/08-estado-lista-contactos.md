@@ -14,6 +14,7 @@
 | Workflow de investigacion de personas | Completo |
 | Tracker local con 30 filas | Completo |
 | Mensajes locales generados | Completo |
+| Revision automatica de mensajes | Preparada por script |
 | Plan local de envio por lotes | Preparado por script |
 | Config local con firma, franjas y links | Pendiente |
 | Envio de mensajes | Pendiente |
@@ -45,6 +46,7 @@ Despues:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\tools\generate-mensajes-validacion.ps1
+powershell -ExecutionPolicy Bypass -File .\tools\check-mensajes-validacion.ps1
 powershell -ExecutionPolicy Bypass -File .\tools\generate-plan-envio-validacion.ps1
 ```
 
