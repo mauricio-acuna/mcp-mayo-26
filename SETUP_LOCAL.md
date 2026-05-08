@@ -39,6 +39,14 @@ Verificar estado de validacion:
 powershell -ExecutionPolicy Bypass -File .\tools\check-validacion.ps1
 ```
 
+Generar borradores locales de mensajes desde el tracker:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\tools\generate-mensajes-validacion.ps1
+```
+
+La salida queda en `_local/validacion/semana-1/mensajes-generados.local.md`.
+
 ## Flujo inmediato
 
 1. Rellenar `_local/validacion/semana-1/CONFIG.local.md`.
