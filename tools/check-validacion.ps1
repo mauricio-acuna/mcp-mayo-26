@@ -39,12 +39,54 @@ function Get-TrackerRows {
     return $rows
 }
 
+function Get-ConfigValue {
+    param(
+        [string[]]$Content,
+        [string]$Key
+    )
+
+    foreach ($line in $Content) {
+        if ($line -match "^\|\s*$([regex]::Escape($Key))\s*\|") {
+            $cells = $line -split "\|"
+            if ($cells.Count -ge 4) {
+                return $cells[2].Trim()
+            }
+        }
+    }
+
+    return ""
+}
+
 Write-Output "Checklist de Etapa 1"
 Write-Output "===================="
 
 Write-Output ("Config local: {0}" -f ($(if (Test-Path $config) { "OK" } else { "FALTA" })))
 Write-Output ("Tracker local: {0}" -f ($(if (Test-Path $tracker) { "OK" } else { "FALTA" })))
 Write-Output ("Sintesis versionable: {0}" -f ($(if (Test-Path $sintesis) { "OK" } else { "FALTA" })))
+
+if (Test-Path $config) {
+    $configContent = Get-Content $config
+    $requiredConfig = @(
+        "Nombre firma",
+        "LinkedIn URL",
+        "Calendly / Cal.com URL",
+        "Franja 1 ofrecida",
+        "Franja 2 ofrecida",
+        "Link capitulo / borrador PDF",
+        "Link OWASP MCP Top 10"
+    )
+    $missingConfig = @()
+    foreach ($field in $requiredConfig) {
+        if (-not (Get-ConfigValue $configContent $field)) {
+            $missingConfig += $field
+        }
+    }
+
+    Write-Output ("Campos config requeridos pendientes: {0}" -f $missingConfig.Count)
+    foreach ($field in $missingConfig) {
+        Write-Output ("  - {0}" -f $field)
+    }
+}
 
 if (Test-Path $tracker) {
     $content = Get-Content $tracker
@@ -76,7 +118,8 @@ if (Test-Path $tracker) {
 
 Write-Output ""
 Write-Output "Siguiente accion esperada:"
-Write-Output "1. Completar 30 contactos en _local/validacion/semana-1/01-tracker-contactos.local.md"
-Write-Output "2. Enviar mensajes personalizados"
-Write-Output "3. Guardar notas por entrevista en _local/validacion/semana-1/notas/"
-Write-Output "4. Copiar solo resumen agregado a mayo2026/ejecucion/semana-1/04-sintesis-dia-7.md"
+Write-Output "1. Completar config local si hay campos pendientes"
+Write-Output "2. Generar y revisar mensajes personalizados"
+Write-Output "3. Enviar en lotes de 10 y marcar estado con tools/update-tracker-status.ps1"
+Write-Output "4. Guardar notas por entrevista en _local/validacion/semana-1/notas/"
+Write-Output "5. Copiar solo resumen agregado a mayo2026/ejecucion/semana-1/04-sintesis-dia-7.md"

@@ -47,6 +47,18 @@ powershell -ExecutionPolicy Bypass -File .\tools\generate-mensajes-validacion.ps
 
 La salida queda en `_local/validacion/semana-1/mensajes-generados.local.md`.
 
+Generar plan local de envio por lotes:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\tools\generate-plan-envio-validacion.ps1
+```
+
+Marcar filas como enviadas despues de cada lote:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\tools\update-tracker-status.ps1 -Ids 1,2,3,4,5,6,7,8,9,10 -Estado enviado
+```
+
 ## Flujo inmediato
 
 1. Rellenar `_local/validacion/semana-1/CONFIG.local.md`.
