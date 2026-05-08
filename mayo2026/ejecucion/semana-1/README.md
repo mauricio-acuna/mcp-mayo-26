@@ -16,7 +16,8 @@ semana-1/
 ├── 04-sintesis-dia-7.md               ← plantilla para escribir la decisión
 ├── 05-fuentes-busqueda-contactos.md   ← fuentes y queries para construir la lista
 ├── 06-organizaciones-objetivo.md      ← organizaciones semilla por segmento
-└── 07-workflow-investigacion-personas.md ← pasos para validar personas concretas
+├── 07-workflow-investigacion-personas.md ← pasos para validar personas concretas
+└── 08-estado-lista-contactos.md       ← estado agregado sin datos privados
 ```
 
 ## Time-box estricto
